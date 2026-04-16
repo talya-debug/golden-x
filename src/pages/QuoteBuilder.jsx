@@ -135,35 +135,35 @@ export default function QuoteBuilder() {
 <style>
 @page{size:A4;margin:0}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,'Heebo',sans-serif;color:#222;font-size:10px;line-height:1.3;direction:rtl;padding:14mm 12mm 8mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.hdr{border-bottom:2px solid #D4A843;padding-bottom:8px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:flex-end}
-.logo{font-size:24px;font-weight:900;color:#D4A843;font-family:Arial}
-.logo span{display:block;font-size:7px;font-weight:400;color:#999;letter-spacing:2px}
-.hdr-l{text-align:left;font-size:9px;color:#777}
-.dn{font-size:11px;font-weight:700;color:#D4A843}
-.greet{background:#faf7f0;padding:8px 12px;margin-bottom:12px;border-right:3px solid #D4A843;font-size:10px;color:#444}
+body{font-family:Arial,'Heebo',sans-serif;color:#222;font-size:10px;line-height:1.35;direction:rtl;padding:18mm 14mm 10mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.hdr{border-bottom:2px solid #D4A843;padding-bottom:10px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:flex-end}
+.logo{font-size:26px;font-weight:900;color:#D4A843;font-family:Arial}
+.logo span{display:block;font-size:8px;font-weight:400;color:#999;letter-spacing:2px}
+.hdr-l{text-align:left;font-size:10px;color:#777}
+.dn{font-size:12px;font-weight:700;color:#D4A843}
+.greet{background:#faf7f0;padding:10px 14px;margin-bottom:14px;border-right:3px solid #D4A843;font-size:11px;color:#444}
 .greet b{color:#D4A843}
-h2{font-size:11px;color:#D4A843;margin:10px 0 5px;padding-bottom:3px;border-bottom:1px solid #ddd;font-weight:700}
-table.t{width:100%;border-collapse:collapse;margin-bottom:10px}
-table.t th{background:#f5f0e3;color:#8a7530;padding:4px 8px;font-size:9px;border-bottom:2px solid #D4A843;text-align:right}
+h2{font-size:12px;color:#D4A843;margin:12px 0 6px;padding-bottom:3px;border-bottom:1px solid #ddd;font-weight:700}
+table.t{width:100%;border-collapse:collapse;margin-bottom:12px}
+table.t th{background:#f5f0e3;color:#8a7530;padding:5px 8px;font-size:9px;border-bottom:2px solid #D4A843;text-align:right}
 table.t th.l{text-align:left}
-table.t td{padding:4px 8px;border-bottom:1px solid #eee;font-size:10px}
+table.t td{padding:5px 8px;border-bottom:1px solid #eee;font-size:10px}
 table.t td.l{text-align:left;font-weight:600}
 table.t .tot td{background:#fdf8ec;font-weight:700;color:#D4A843;border-top:2px solid #D4A843}
-.sum{width:100%;border-collapse:collapse;margin:12px 0;background:#1a1a2e;color:#fff}
-.sum td{padding:9px;text-align:center;font-size:8px;color:#bbb;width:33.3%}
-.sum .v{display:block;font-size:14px;font-weight:700;color:#D4A843;margin-top:1px}
-.sum .vb{font-size:16px}
+.sum{width:100%;border-collapse:collapse;margin:14px 0;background:#1a1a2e;color:#fff}
+.sum td{padding:10px;text-align:center;font-size:9px;color:#bbb;width:33.3%}
+.sum .v{display:block;font-size:15px;font-weight:700;color:#D4A843;margin-top:2px}
+.sum .vb{font-size:17px}
 .sum td+td{border-right:1px solid rgba(255,255,255,.15)}
-.terms{background:#f7f7f7;padding:6px 10px;margin-bottom:6px;font-size:8px;color:#555}
-.terms b{color:#333;font-size:9px;display:block;margin-bottom:2px}
-.terms ul{padding-right:12px;margin:0}
-.terms li{margin-bottom:0}
-.sigs{margin-top:10px;padding-top:6px;border-top:1px solid #ddd;display:flex;justify-content:space-between}
+.terms{background:#f7f7f7;padding:8px 12px;margin-bottom:8px;font-size:9px;color:#555}
+.terms b{color:#333;font-size:10px;display:block;margin-bottom:3px}
+.terms ul{padding-right:14px;margin:0}
+.terms li{margin-bottom:1px}
+.sigs{margin-top:14px;padding-top:8px;border-top:1px solid #ddd;display:flex;justify-content:space-between}
 .sig{width:42%;text-align:center}
-.sig .line{border-bottom:1px solid #bbb;height:22px;margin-bottom:2px}
-.sig .name{font-size:8px;color:#888}
-.ft{text-align:center;color:#ccc;font-size:7px;margin-top:6px;padding-top:4px;border-top:1px solid #eee}
+.sig .line{border-bottom:1px solid #bbb;height:26px;margin-bottom:3px}
+.sig .name{font-size:9px;color:#888}
+.ft{text-align:center;color:#ccc;font-size:8px;margin-top:8px;padding-top:5px;border-top:1px solid #eee}
 </style></head><body>
 
 <div class="hdr">
