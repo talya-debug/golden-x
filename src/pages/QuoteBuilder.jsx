@@ -135,23 +135,23 @@ export default function QuoteBuilder() {
 <style>
 @page{size:A4;margin:0}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,'Heebo',sans-serif;color:#222;font-size:10px;line-height:1.3;direction:rtl;padding:8mm 12mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.hdr{border-bottom:2px solid #D4A843;padding-bottom:6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-end}
+body{font-family:Arial,'Heebo',sans-serif;color:#222;font-size:10px;line-height:1.3;direction:rtl;padding:14mm 12mm 8mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.hdr{border-bottom:2px solid #D4A843;padding-bottom:8px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:flex-end}
 .logo{font-size:24px;font-weight:900;color:#D4A843;font-family:Arial}
 .logo span{display:block;font-size:7px;font-weight:400;color:#999;letter-spacing:2px}
 .hdr-l{text-align:left;font-size:9px;color:#777}
 .dn{font-size:11px;font-weight:700;color:#D4A843}
-.greet{background:#faf7f0;padding:6px 10px;margin-bottom:8px;border-right:3px solid #D4A843;font-size:10px;color:#444}
+.greet{background:#faf7f0;padding:8px 12px;margin-bottom:12px;border-right:3px solid #D4A843;font-size:10px;color:#444}
 .greet b{color:#D4A843}
-h2{font-size:11px;color:#D4A843;margin:6px 0 3px;padding-bottom:2px;border-bottom:1px solid #ddd;font-weight:700}
-table.t{width:100%;border-collapse:collapse;margin-bottom:6px}
-table.t th{background:#f5f0e3;color:#8a7530;padding:3px 6px;font-size:9px;border-bottom:2px solid #D4A843;text-align:right}
+h2{font-size:11px;color:#D4A843;margin:10px 0 5px;padding-bottom:3px;border-bottom:1px solid #ddd;font-weight:700}
+table.t{width:100%;border-collapse:collapse;margin-bottom:10px}
+table.t th{background:#f5f0e3;color:#8a7530;padding:4px 8px;font-size:9px;border-bottom:2px solid #D4A843;text-align:right}
 table.t th.l{text-align:left}
-table.t td{padding:3px 6px;border-bottom:1px solid #eee;font-size:10px}
+table.t td{padding:4px 8px;border-bottom:1px solid #eee;font-size:10px}
 table.t td.l{text-align:left;font-weight:600}
 table.t .tot td{background:#fdf8ec;font-weight:700;color:#D4A843;border-top:2px solid #D4A843}
-.sum{width:100%;border-collapse:collapse;margin:8px 0;background:#1a1a2e;color:#fff}
-.sum td{padding:7px;text-align:center;font-size:8px;color:#bbb;width:33.3%}
+.sum{width:100%;border-collapse:collapse;margin:12px 0;background:#1a1a2e;color:#fff}
+.sum td{padding:9px;text-align:center;font-size:8px;color:#bbb;width:33.3%}
 .sum .v{display:block;font-size:14px;font-weight:700;color:#D4A843;margin-top:1px}
 .sum .vb{font-size:16px}
 .sum td+td{border-right:1px solid rgba(255,255,255,.15)}
