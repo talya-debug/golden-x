@@ -124,7 +124,7 @@ export default function QuoteBuilder() {
       return { category: cat, total: catTotal }
     })
 
-    const totalWithVat = Math.round(totals.totalSell * 1.17)
+    const totalWithVat = Math.round(totals.totalSell * 1.18)
     const vatAmount = totalWithVat - totals.totalSell
 
     const win = window.open('', '_blank')
@@ -132,39 +132,39 @@ export default function QuoteBuilder() {
 <html dir="rtl" lang="he"><head><meta charset="UTF-8">
 <title>הצעת מחיר ${quote.number}</title>
 <style>
-@page{size:A4;margin:12mm 14mm}
+@page{size:A4;margin:6mm 10mm}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,'Heebo',sans-serif;color:#222;font-size:11px;line-height:1.4;direction:rtl}
-.p{max-width:182mm;margin:0 auto}
-.hdr{border-bottom:2px solid #D4A843;padding-bottom:8px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:flex-end}
-.logo{font-size:26px;font-weight:900;color:#D4A843;font-family:Arial}
-.logo span{display:block;font-size:8px;font-weight:400;color:#999;letter-spacing:2px}
-.hdr-left{text-align:left;font-size:10px;color:#777}
-.dn{font-size:12px;font-weight:700;color:#D4A843}
-.greet{background:#faf7f0;padding:10px 14px;margin-bottom:12px;border-right:3px solid #D4A843;font-size:11px;color:#444}
+body{font-family:Arial,'Heebo',sans-serif;color:#222;font-size:10px;line-height:1.3;direction:rtl}
+.p{max-width:190mm;margin:0 auto}
+.hdr{border-bottom:2px solid #D4A843;padding-bottom:6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-end}
+.logo{font-size:24px;font-weight:900;color:#D4A843;font-family:Arial}
+.logo span{display:block;font-size:7px;font-weight:400;color:#999;letter-spacing:2px}
+.hdr-left{text-align:left;font-size:9px;color:#777}
+.dn{font-size:11px;font-weight:700;color:#D4A843}
+.greet{background:#faf7f0;padding:7px 12px;margin-bottom:8px;border-right:3px solid #D4A843;font-size:10px;color:#444}
 .greet b{color:#D4A843}
-h2{font-size:12px;color:#D4A843;margin:10px 0 5px;padding-bottom:3px;border-bottom:1px solid #ddd}
-table.t{width:100%;border-collapse:collapse;margin-bottom:10px}
-table.t th{background:#f5f0e3;color:#8a7530;padding:5px 8px;font-size:10px;border-bottom:2px solid #D4A843}
+h2{font-size:11px;color:#D4A843;margin:7px 0 4px;padding-bottom:2px;border-bottom:1px solid #ddd}
+table.t{width:100%;border-collapse:collapse;margin-bottom:7px}
+table.t th{background:#f5f0e3;color:#8a7530;padding:3px 6px;font-size:9px;border-bottom:2px solid #D4A843}
 table.t th.r{text-align:right}
 table.t th.l{text-align:left}
-table.t td{padding:5px 8px;border-bottom:1px solid #eee;font-size:11px}
+table.t td{padding:3px 6px;border-bottom:1px solid #eee;font-size:10px}
 table.t td.l{text-align:left;font-weight:600}
 table.t .tot td{background:#fdf8ec;font-weight:700;color:#D4A843;border-top:2px solid #D4A843}
-.summary-box{width:100%;border-collapse:collapse;margin:12px 0;background:#1a1a2e;color:#fff;border-radius:4px;overflow:hidden}
-.summary-box td{padding:10px;text-align:center;font-size:9px;color:#bbb;width:33.3%}
-.summary-box .v{display:block;font-size:16px;font-weight:700;color:#D4A843;margin-top:2px}
-.summary-box .vb{font-size:18px}
+.summary-box{width:100%;border-collapse:collapse;margin:8px 0;background:#1a1a2e;color:#fff;overflow:hidden}
+.summary-box td{padding:7px;text-align:center;font-size:8px;color:#bbb;width:33.3%}
+.summary-box .v{display:block;font-size:14px;font-weight:700;color:#D4A843;margin-top:1px}
+.summary-box .vb{font-size:16px}
 .summary-box td+td{border-right:1px solid rgba(255,255,255,.15)}
-.terms{background:#f7f7f7;padding:10px 14px;margin-bottom:10px;font-size:9px;color:#555}
-.terms b{color:#333;font-size:10px;display:block;margin-bottom:3px}
-.terms ul{padding-right:14px;margin:0}
-.terms li{margin-bottom:1px}
-.sigs{margin-top:16px;padding-top:8px;border-top:1px solid #ddd;display:flex;justify-content:space-between}
+.terms{background:#f7f7f7;padding:7px 12px;margin-bottom:6px;font-size:8px;color:#555}
+.terms b{color:#333;font-size:9px;display:block;margin-bottom:2px}
+.terms ul{padding-right:12px;margin:0}
+.terms li{margin-bottom:0}
+.sigs{margin-top:10px;padding-top:6px;border-top:1px solid #ddd;display:flex;justify-content:space-between}
 .sig{width:42%;text-align:center}
-.sig .line{border-bottom:1px solid #bbb;height:28px;margin-bottom:3px}
-.sig .name{font-size:9px;color:#888}
-.ft{text-align:center;color:#ccc;font-size:8px;margin-top:10px;padding-top:6px;border-top:1px solid #eee}
+.sig .line{border-bottom:1px solid #bbb;height:24px;margin-bottom:2px}
+.sig .name{font-size:8px;color:#888}
+.ft{text-align:center;color:#ccc;font-size:7px;margin-top:6px;padding-top:4px;border-top:1px solid #eee}
 @media print{body{padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}.p{max-width:none}}
 </style></head><body>
 <div class="p">
@@ -177,21 +177,21 @@ table.t .tot td{background:#fdf8ec;font-weight:700;color:#D4A843;border-top:2px 
 
 <h2>פירוט עבודות</h2>
 <table class="t">
-<tr><th class="r">תחום</th><th class="l" style="width:110px">סכום</th></tr>
+<tr><th class="r">תחום</th><th class="l" style="width:100px">סכום</th></tr>
 ${categoryTotals.map(c => `<tr><td>${c.category}</td><td class="l">${c.total.toLocaleString()} ₪</td></tr>`).join('')}
 <tr class="tot"><td>סה"כ</td><td class="l">${totals.totalSell.toLocaleString()} ₪</td></tr>
 </table>
 
 <h2>תנאי תשלום</h2>
 <table class="t">
-<tr><th class="r" style="width:28px">#</th><th class="r">שלב</th><th class="r" style="width:45px">אחוז</th><th class="l" style="width:95px">סכום</th></tr>
+<tr><th class="r" style="width:24px">#</th><th class="r">שלב</th><th class="r" style="width:40px">אחוז</th><th class="l" style="width:90px">סכום</th></tr>
 ${milestones.map((ms, i) => `<tr><td>${i + 1}</td><td>${ms.name}</td><td>${ms.percentage}%</td><td class="l">${Math.round(totals.totalSell * ms.percentage / 100).toLocaleString()} ₪</td></tr>`).join('')}
 <tr class="tot"><td colspan="2">סה"כ</td><td>100%</td><td class="l">${totals.totalSell.toLocaleString()} ₪</td></tr>
 </table>
 
 <table class="summary-box"><tr>
 <td>לפני מע"מ<span class="v">${totals.totalSell.toLocaleString()} ₪</span></td>
-<td>מע"מ 17%<span class="v">${vatAmount.toLocaleString()} ₪</span></td>
+<td>מע"מ 18%<span class="v">${vatAmount.toLocaleString()} ₪</span></td>
 <td>סה"כ לתשלום<span class="v vb">${totalWithVat.toLocaleString()} ₪</span></td>
 </tr></table>
 
