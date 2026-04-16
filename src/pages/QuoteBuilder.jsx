@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Plus, Trash2, Save, CheckCircle, X, FileDown } from 'lucide-react'
+import html2pdf from 'html2pdf.js'
 import { findPriceItem, calcQuoteTotals, formatCurrency, formatDate, getStatusLabel, getStatusBadgeClass, categoryIcons, getCategories, getTypeLabel, getTypeBadgeClass } from '../data/mockData'
 import { getQuote, updateQuote, approveQuote, getPriceList } from '../data/store'
 
@@ -127,77 +128,41 @@ export default function QuoteBuilder() {
     const totalWithVat = Math.round(totals.totalSell * 1.18)
     const vatAmount = totalWithVat - totals.totalSell
 
-    const win = window.open('', '_blank')
-    win.document.write(`<!DOCTYPE html>
-<html dir="rtl" lang="he"><head><meta charset="UTF-8">
-<title>הצעת מחיר ${quote.number}</title>
-<style>
-@page{size:A4;margin:6mm 10mm}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,'Heebo',sans-serif;color:#222;font-size:10px;line-height:1.3;direction:rtl}
-.p{max-width:190mm;margin:0 auto}
-.hdr{border-bottom:2px solid #D4A843;padding-bottom:6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-end}
-.logo{font-size:24px;font-weight:900;color:#D4A843;font-family:Arial}
-.logo span{display:block;font-size:7px;font-weight:400;color:#999;letter-spacing:2px}
-.hdr-left{text-align:left;font-size:9px;color:#777}
-.dn{font-size:11px;font-weight:700;color:#D4A843}
-.greet{background:#faf7f0;padding:7px 12px;margin-bottom:8px;border-right:3px solid #D4A843;font-size:10px;color:#444}
-.greet b{color:#D4A843}
-h2{font-size:11px;color:#D4A843;margin:7px 0 4px;padding-bottom:2px;border-bottom:1px solid #ddd}
-table.t{width:100%;border-collapse:collapse;margin-bottom:7px}
-table.t th{background:#f5f0e3;color:#8a7530;padding:3px 6px;font-size:9px;border-bottom:2px solid #D4A843}
-table.t th.r{text-align:right}
-table.t th.l{text-align:left}
-table.t td{padding:3px 6px;border-bottom:1px solid #eee;font-size:10px}
-table.t td.l{text-align:left;font-weight:600}
-table.t .tot td{background:#fdf8ec;font-weight:700;color:#D4A843;border-top:2px solid #D4A843}
-.summary-box{width:100%;border-collapse:collapse;margin:8px 0;background:#1a1a2e;color:#fff;overflow:hidden}
-.summary-box td{padding:7px;text-align:center;font-size:8px;color:#bbb;width:33.3%}
-.summary-box .v{display:block;font-size:14px;font-weight:700;color:#D4A843;margin-top:1px}
-.summary-box .vb{font-size:16px}
-.summary-box td+td{border-right:1px solid rgba(255,255,255,.15)}
-.terms{background:#f7f7f7;padding:7px 12px;margin-bottom:6px;font-size:8px;color:#555}
-.terms b{color:#333;font-size:9px;display:block;margin-bottom:2px}
-.terms ul{padding-right:12px;margin:0}
-.terms li{margin-bottom:0}
-.sigs{margin-top:10px;padding-top:6px;border-top:1px solid #ddd;display:flex;justify-content:space-between}
-.sig{width:42%;text-align:center}
-.sig .line{border-bottom:1px solid #bbb;height:24px;margin-bottom:2px}
-.sig .name{font-size:8px;color:#888}
-.ft{text-align:center;color:#ccc;font-size:7px;margin-top:6px;padding-top:4px;border-top:1px solid #eee}
-@media print{body{padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}.p{max-width:none}}
-</style></head><body>
-<div class="p">
-<div class="hdr">
-  <div><div class="logo">GX<span>GOLDEN X PROJECTS</span></div></div>
-  <div class="hdr-left"><div class="dn">הצעת מחיר ${quote.number}</div>${formatDate(quote.date)}<br>תוקף: 30 יום</div>
+    // יצירת אלמנט זמני ל-PDF
+    const el = document.createElement('div')
+    el.style.cssText = 'position:absolute;left:-9999px;top:0;width:210mm;direction:rtl;font-family:Arial,sans-serif;color:#222;font-size:11px;line-height:1.35;padding:10mm 12mm'
+
+    el.innerHTML = `
+<div style="border-bottom:2px solid #D4A843;padding-bottom:8px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-end">
+  <div><div style="font-size:28px;font-weight:900;color:#D4A843;font-family:Arial">GX<span style="display:block;font-size:8px;font-weight:400;color:#999;letter-spacing:2px">GOLDEN X PROJECTS</span></div></div>
+  <div style="text-align:left;font-size:10px;color:#777"><div style="font-size:12px;font-weight:700;color:#D4A843">הצעת מחיר ${quote.number}</div>${formatDate(quote.date)}<br>תוקף: 30 יום</div>
 </div>
 
-<div class="greet">שלום רב <b>${quote.clientName}</b>,<br>בהמשך לשיחתנו, מצורפת הצעתנו עבור <b>${quote.address}</b>. להלן פירוט העבודות והתנאים:</div>
+<div style="background:#faf7f0;padding:8px 12px;margin-bottom:10px;border-right:3px solid #D4A843;font-size:11px;color:#444">שלום רב <b style="color:#D4A843">${quote.clientName}</b>,<br>בהמשך לשיחתנו, מצורפת הצעתנו עבור <b style="color:#D4A843">${quote.address}</b>. להלן פירוט העבודות והתנאים:</div>
 
-<h2>פירוט עבודות</h2>
-<table class="t">
-<tr><th class="r">תחום</th><th class="l" style="width:100px">סכום</th></tr>
-${categoryTotals.map(c => `<tr><td>${c.category}</td><td class="l">${c.total.toLocaleString()} ₪</td></tr>`).join('')}
-<tr class="tot"><td>סה"כ</td><td class="l">${totals.totalSell.toLocaleString()} ₪</td></tr>
+<div style="font-size:12px;color:#D4A843;margin:8px 0 4px;padding-bottom:2px;border-bottom:1px solid #ddd;font-weight:700">פירוט עבודות</div>
+<table style="width:100%;border-collapse:collapse;margin-bottom:8px">
+<tr><th style="background:#f5f0e3;color:#8a7530;padding:4px 8px;font-size:10px;border-bottom:2px solid #D4A843;text-align:right">תחום</th><th style="background:#f5f0e3;color:#8a7530;padding:4px 8px;font-size:10px;border-bottom:2px solid #D4A843;text-align:left;width:100px">סכום</th></tr>
+${categoryTotals.map(c => `<tr><td style="padding:4px 8px;border-bottom:1px solid #eee">${c.category}</td><td style="padding:4px 8px;border-bottom:1px solid #eee;text-align:left;font-weight:600">${c.total.toLocaleString()} ₪</td></tr>`).join('')}
+<tr><td style="padding:4px 8px;background:#fdf8ec;font-weight:700;color:#D4A843;border-top:2px solid #D4A843">סה"כ</td><td style="padding:4px 8px;background:#fdf8ec;font-weight:700;color:#D4A843;border-top:2px solid #D4A843;text-align:left">${totals.totalSell.toLocaleString()} ₪</td></tr>
 </table>
 
-<h2>תנאי תשלום</h2>
-<table class="t">
-<tr><th class="r" style="width:24px">#</th><th class="r">שלב</th><th class="r" style="width:40px">אחוז</th><th class="l" style="width:90px">סכום</th></tr>
-${milestones.map((ms, i) => `<tr><td>${i + 1}</td><td>${ms.name}</td><td>${ms.percentage}%</td><td class="l">${Math.round(totals.totalSell * ms.percentage / 100).toLocaleString()} ₪</td></tr>`).join('')}
-<tr class="tot"><td colspan="2">סה"כ</td><td>100%</td><td class="l">${totals.totalSell.toLocaleString()} ₪</td></tr>
+<div style="font-size:12px;color:#D4A843;margin:8px 0 4px;padding-bottom:2px;border-bottom:1px solid #ddd;font-weight:700">תנאי תשלום</div>
+<table style="width:100%;border-collapse:collapse;margin-bottom:8px">
+<tr><th style="background:#f5f0e3;color:#8a7530;padding:4px 8px;font-size:10px;border-bottom:2px solid #D4A843;text-align:right;width:24px">#</th><th style="background:#f5f0e3;color:#8a7530;padding:4px 8px;font-size:10px;border-bottom:2px solid #D4A843;text-align:right">שלב</th><th style="background:#f5f0e3;color:#8a7530;padding:4px 8px;font-size:10px;border-bottom:2px solid #D4A843;text-align:right;width:40px">אחוז</th><th style="background:#f5f0e3;color:#8a7530;padding:4px 8px;font-size:10px;border-bottom:2px solid #D4A843;text-align:left;width:90px">סכום</th></tr>
+${milestones.map((ms, i) => `<tr><td style="padding:4px 8px;border-bottom:1px solid #eee">${i + 1}</td><td style="padding:4px 8px;border-bottom:1px solid #eee">${ms.name}</td><td style="padding:4px 8px;border-bottom:1px solid #eee">${ms.percentage}%</td><td style="padding:4px 8px;border-bottom:1px solid #eee;text-align:left;font-weight:600">${Math.round(totals.totalSell * ms.percentage / 100).toLocaleString()} ₪</td></tr>`).join('')}
+<tr><td colspan="2" style="padding:4px 8px;background:#fdf8ec;font-weight:700;color:#D4A843;border-top:2px solid #D4A843">סה"כ</td><td style="padding:4px 8px;background:#fdf8ec;font-weight:700;color:#D4A843;border-top:2px solid #D4A843">100%</td><td style="padding:4px 8px;background:#fdf8ec;font-weight:700;color:#D4A843;border-top:2px solid #D4A843;text-align:left">${totals.totalSell.toLocaleString()} ₪</td></tr>
 </table>
 
-<table class="summary-box"><tr>
-<td>לפני מע"מ<span class="v">${totals.totalSell.toLocaleString()} ₪</span></td>
-<td>מע"מ 18%<span class="v">${vatAmount.toLocaleString()} ₪</span></td>
-<td>סה"כ לתשלום<span class="v vb">${totalWithVat.toLocaleString()} ₪</span></td>
+<table style="width:100%;border-collapse:collapse;margin:10px 0;background:#1a1a2e;color:#fff"><tr>
+<td style="padding:8px;text-align:center;font-size:9px;color:#bbb;width:33.3%">לפני מע"מ<span style="display:block;font-size:15px;font-weight:700;color:#D4A843;margin-top:2px">${totals.totalSell.toLocaleString()} ₪</span></td>
+<td style="padding:8px;text-align:center;font-size:9px;color:#bbb;width:33.3%;border-right:1px solid rgba(255,255,255,.15)">מע"מ 18%<span style="display:block;font-size:15px;font-weight:700;color:#D4A843;margin-top:2px">${vatAmount.toLocaleString()} ₪</span></td>
+<td style="padding:8px;text-align:center;font-size:9px;color:#bbb;width:33.3%;border-right:1px solid rgba(255,255,255,.15)">סה"כ לתשלום<span style="display:block;font-size:17px;font-weight:700;color:#D4A843;margin-top:2px">${totalWithVat.toLocaleString()} ₪</span></td>
 </tr></table>
 
-<div class="terms">
-<b>תנאים והערות</b>
-<ul>
+<div style="background:#f7f7f7;padding:8px 12px;margin-bottom:8px;font-size:9px;color:#555">
+<b style="color:#333;font-size:10px;display:block;margin-bottom:2px">תנאים והערות</b>
+<ul style="padding-right:14px;margin:0">
 <li>הצעה זו בתוקף ל-30 יום מתאריך ההנפקה</li>
 <li>המחירים אינם כוללים מע"מ אלא אם צוין אחרת</li>
 <li>לוח זמנים משוער ייקבע עם חתימת ההסכם ויותאם לתנאי השטח</li>
@@ -208,16 +173,26 @@ ${milestones.map((ms, i) => `<tr><td>${i + 1}</td><td>${ms.name}</td><td>${ms.pe
 </ul>
 </div>
 
-<div class="sigs">
-<div class="sig"><div class="line"></div><div class="name">Golden X Projects</div></div>
-<div class="sig"><div class="line"></div><div class="name">${quote.clientName}</div></div>
+<div style="margin-top:12px;padding-top:8px;border-top:1px solid #ddd;display:flex;justify-content:space-between">
+<div style="width:42%;text-align:center"><div style="border-bottom:1px solid #bbb;height:26px;margin-bottom:3px"></div><div style="font-size:9px;color:#888">Golden X Projects</div></div>
+<div style="width:42%;text-align:center"><div style="border-bottom:1px solid #bbb;height:26px;margin-bottom:3px"></div><div style="font-size:9px;color:#888">${quote.clientName}</div></div>
 </div>
 
-<div class="ft">Golden X Projects | ${quote.number} | ${formatDate(quote.date)}</div>
-</div>
-<script>window.onload=()=>window.print()</script>
-    </body></html>`)
-    win.document.close()
+<div style="text-align:center;color:#ccc;font-size:8px;margin-top:8px;padding-top:4px;border-top:1px solid #eee">Golden X Projects | ${quote.number} | ${formatDate(quote.date)}</div>
+`
+
+    document.body.appendChild(el)
+
+    html2pdf().set({
+      margin: 0,
+      filename: `הצעת_מחיר_${quote.number}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: 'avoid-all' }
+    }).from(el).save().then(() => {
+      document.body.removeChild(el)
+    })
   }
 
   return (
