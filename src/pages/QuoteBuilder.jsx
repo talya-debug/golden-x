@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Plus, Trash2, Save, CheckCircle, X, FileDown } from 'lucide-react'
-import html2pdf from 'html2pdf.js'
 import { findPriceItem, calcQuoteTotals, formatCurrency, formatDate, getStatusLabel, getStatusBadgeClass, categoryIcons, getCategories, getTypeLabel, getTypeBadgeClass } from '../data/mockData'
 import { getQuote, updateQuote, approveQuote, getPriceList } from '../data/store'
 
@@ -128,13 +127,15 @@ export default function QuoteBuilder() {
     const totalWithVat = Math.round(totals.totalSell * 1.18)
     const vatAmount = totalWithVat - totals.totalSell
 
-    const htmlContent = `<!DOCTYPE html>
+    // פתיחת חלון חדש עם ה-PDF — margin:0 מסיר כיתובי דפדפן
+    const win = window.open('', '_blank')
+    win.document.write(`<!DOCTYPE html>
 <html dir="rtl" lang="he"><head><meta charset="UTF-8">
 <title>הצעת מחיר ${quote.number}</title>
 <style>
 @page{size:A4;margin:0}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,'Heebo',sans-serif;color:#222;font-size:10px;line-height:1.3;direction:rtl;padding:8mm 12mm;width:210mm;min-height:297mm}
+body{font-family:Arial,'Heebo',sans-serif;color:#222;font-size:10px;line-height:1.3;direction:rtl;padding:8mm 12mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .hdr{border-bottom:2px solid #D4A843;padding-bottom:6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-end}
 .logo{font-size:24px;font-weight:900;color:#D4A843;font-family:Arial}
 .logo span{display:block;font-size:7px;font-weight:400;color:#999;letter-spacing:2px}
@@ -163,7 +164,6 @@ table.t .tot td{background:#fdf8ec;font-weight:700;color:#D4A843;border-top:2px 
 .sig .line{border-bottom:1px solid #bbb;height:22px;margin-bottom:2px}
 .sig .name{font-size:8px;color:#888}
 .ft{text-align:center;color:#ccc;font-size:7px;margin-top:6px;padding-top:4px;border-top:1px solid #eee}
-@media print{body{padding:8mm 12mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style></head><body>
 
 <div class="hdr">
@@ -213,31 +213,9 @@ ${milestones.map((ms, i) => `<tr><td>${i + 1}</td><td>${ms.name}</td><td>${ms.pe
 
 <div class="ft">Golden X Projects | ${quote.number} | ${formatDate(quote.date)}</div>
 
-</body></html>`
-
-    // יצירת div זמני על המסך כדי ש-html2canvas יוכל לצלם
-    const wrapper = document.createElement('div')
-    wrapper.style.cssText = 'position:fixed;top:0;left:0;width:210mm;background:#fff;z-index:99999;overflow:hidden'
-    wrapper.innerHTML = htmlContent.replace(/<!DOCTYPE.*?<body[^>]*>/s, '').replace(/<\/body>.*$/s, '')
-    // להעתיק את הסגנונות
-    const style = document.createElement('style')
-    style.textContent = htmlContent.match(/<style>([\s\S]*?)<\/style>/)?.[1] || ''
-    wrapper.prepend(style)
-    wrapper.setAttribute('dir', 'rtl')
-    document.body.appendChild(wrapper)
-
-    setTimeout(() => {
-      html2pdf().set({
-        margin: 0,
-        filename: `הצעת_מחיר_${quote.number}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false, windowWidth: wrapper.scrollWidth },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: 'avoid-all' }
-      }).from(wrapper).save().then(() => {
-        document.body.removeChild(wrapper)
-      })
-    }, 200)
+<script>window.onload=()=>window.print()</script>
+</body></html>`)
+    win.document.close()
   }
 
   return (
