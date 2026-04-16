@@ -215,28 +215,29 @@ ${milestones.map((ms, i) => `<tr><td>${i + 1}</td><td>${ms.name}</td><td>${ms.pe
 
 </body></html>`
 
-    // יצירת iframe מוסתר לרינדור ואז הורדה כ-PDF
-    const iframe = document.createElement('iframe')
-    iframe.style.cssText = 'position:fixed;left:0;top:0;width:210mm;height:297mm;opacity:0;pointer-events:none;z-index:-1'
-    document.body.appendChild(iframe)
+    // יצירת div זמני על המסך כדי ש-html2canvas יוכל לצלם
+    const wrapper = document.createElement('div')
+    wrapper.style.cssText = 'position:fixed;top:0;left:0;width:210mm;background:#fff;z-index:99999;overflow:hidden'
+    wrapper.innerHTML = htmlContent.replace(/<!DOCTYPE.*?<body[^>]*>/s, '').replace(/<\/body>.*$/s, '')
+    // להעתיק את הסגנונות
+    const style = document.createElement('style')
+    style.textContent = htmlContent.match(/<style>([\s\S]*?)<\/style>/)?.[1] || ''
+    wrapper.prepend(style)
+    wrapper.setAttribute('dir', 'rtl')
+    document.body.appendChild(wrapper)
 
-    iframe.contentDocument.open()
-    iframe.contentDocument.write(htmlContent)
-    iframe.contentDocument.close()
-
-    // נותנים לתוכן להיטען ואז מצלמים עם html2pdf
     setTimeout(() => {
       html2pdf().set({
         margin: 0,
         filename: `הצעת_מחיר_${quote.number}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
+        html2canvas: { scale: 2, useCORS: true, logging: false, windowWidth: wrapper.scrollWidth },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: 'avoid-all' }
-      }).from(iframe.contentDocument.body).save().then(() => {
-        document.body.removeChild(iframe)
+      }).from(wrapper).save().then(() => {
+        document.body.removeChild(wrapper)
       })
-    }, 300)
+    }, 200)
   }
 
   return (
